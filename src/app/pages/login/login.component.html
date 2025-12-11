@@ -1,0 +1,84 @@
+<div class="auth-wrapper bg-white vw-100 vh-100">
+    <div class="row g-0 w-100 h-100">
+        <div class="col-lg-7 d-none d-lg-block position-relative overflow-hidden h-100 auth-illustration">
+            <img class="auth-illustration-img position-absolute h-auto object-fit-contain w-50" src="images/image.png"
+                alt="Illustration">
+            <div class="auth-illustration-caption position-absolute text-center mb-4">
+                <h3 class="text-primary fw-bold mb-0">Build loyalty. Boost growth</h3>
+                <p class="text-primary fs-18 m-0">Empower your business with a smarter reward system.</p>
+            </div>
+        </div>
+        <div
+            class="col-lg-5 d-flex align-items-start align-items-lg-center justify-content-center bg-white px-3 px-lg-0 py-4 py-lg-0 min-vh-100">
+            <div class="auth-form w-100 my-0 my-lg-auto">
+                <div class="text-center mb-3">
+                    <div class="mb-4 fw-bold text-black fs-20 mb-7">Logo here</div>
+                    <h2 class="fw-bold text-black mb-1 fs-19">Login to your Account</h2>
+                    <p class="mb-0 fw-normal fs-17">Log in to reward smarter and grow faster</p>
+                </div>
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                    <div class="mb-3 position-relative">
+                        <label for="email" class="form-label fw-medium text-grey fs-16 mb-0">Email</label>
+                        <input type="email" id="email" formControlName="email"
+                            class="form-control fs-14 py-3 shadow-none ps-2" placeholder="mail@abc.com"
+                            autocomplete="email" [class.is-invalid]="f['email'].touched && f['email'].invalid" />
+                        <div class="d-block text-primary fs-14" *ngIf="f['email'].touched && f['email'].invalid">
+                            <div *ngIf="f['email'].errors?.['required']">Email is required</div>
+                            <div *ngIf="f['email'].errors?.['email'] || f['email'].errors?.['pattern']">
+                                Please enter valid email
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="password" class="form-label fw-medium text-grey fs-16 mb-0">Password</label>
+                        <div class="position-relative input-with-icon">
+                            <input [type]="passwordVisible ? 'text' : 'password'" id="password"
+                                formControlName="password" class="form-control fs-14 py-3 shadow-none ps-2 pe-5"
+                                placeholder="••••••••" autocomplete="current-password"
+                                [class.is-invalid]="f['password'].touched && f['password'].invalid" />
+                            <i [ngClass]="passwordVisible ? 'ri-eye-line' : 'ri-eye-off-line'"
+                                class="text-primary position-absolute cursor-pointer fs-16 eye-icon"
+                                (click)="togglePassword()" role="button" tabindex="0"></i>
+                        </div>
+                        <div class="d-block text-primary fs-14 mt-1" *ngIf="f['password'].touched && f['password'].invalid">
+                            <div *ngIf="f['password'].errors?.['required']">Password is required</div>
+                            <div *ngIf="f['password'].errors?.['minlength']">Minimum 8 characters required</div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <div class="form-check mb-0">
+                            <input class="form-check-input bg-primary border-primary shadow-none" type="checkbox"
+                                id="rememberMe" checked>
+                            <label class="form-check-label text-grey fs-14" for="rememberMe">Remember Me</label>
+                        </div>
+                        <a [routerLink]="'/resetpassword'"
+                            class="text-primary cursor-pointer text-decoration-none hover-underline custom-hover fs-14">
+                            Forgot Password?
+                        </a>
+                    </div>
+
+                    <button class="btn btn-primary text-secondary w-100 fs-16 py-3 fw-bold border-0 mb-7" type="submit"
+                        [disabled]="loading">
+                        <i class="ri-login-box-line me-1" *ngIf="!loading"></i>
+                        <span *ngIf="!loading">Login</span>
+                        <span *ngIf="loading">
+                            <i class="spinner-border spinner-border-sm me-2"></i>
+                        </span>
+                    </button>
+
+                </form>
+
+                <p class="text-center text-grey fs-16">
+                    Don’t have an Account?
+                    <a [routerLink]="'/signup'"
+                        class="text-primary fw-normal cursor-pointer text-decoration-none hover-underline custom-hover">
+                        Create an account
+                    </a>
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>

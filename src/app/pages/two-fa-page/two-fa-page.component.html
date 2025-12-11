@@ -1,0 +1,39 @@
+<div class="py-2">
+  <h5 class="my-3 fw-semibold">Two-Factor Authentication (2FA)</h5>
+
+  <div class="d-flex align-items-start justify-content-between rounded-3 mb-2">
+    <div class="pe-3">
+      <div class="fw-medium fs-19">Enable Two-Factor Authentication</div>
+      <small class="text-muted fs-16">
+        Protect your account with an additional security step
+      </small>
+    </div>
+
+    <div class="form-check form-switch m-0">
+      <input #twofaSwitch id="twofaSwitch" class="form-check-input shadow-none" type="checkbox" [checked]="twoFAEnabled"
+        (change)="onToggleChange(twofaSwitch.checked)" />
+    </div>
+  </div>
+
+  <!-- When 2FA is enabled -->
+  <div *ngIf="twoFAEnabled" class="mt-3">
+    <div *ngIf="showSetupInfo && otpauthUrl" class="text-center">
+      <qrcode [qrdata]="otpauthUrl" [width]="220" [elementType]="'img'" [errorCorrectionLevel]="'M'"></qrcode>
+
+      <div class="mt-4 mx-auto" style="max-width:340px;">
+        <label for="otp" class="form-label fw-medium text-muted mb-1">
+          Verify OTP
+        </label>
+        <input id="otp" type="text" maxlength="6" class="form-control text-center shadow-none" inputmode="numeric"
+          autocomplete="one-time-code" [(ngModel)]="otp" placeholder="" />
+
+        <div class="d-flex justify-content-center mt-3">
+          <button class="btn btn-primary px-4" (click)="verify()" [disabled]="verifying || !otp">
+            {{ verifying ? 'Verifying…' : 'Verify' }}
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

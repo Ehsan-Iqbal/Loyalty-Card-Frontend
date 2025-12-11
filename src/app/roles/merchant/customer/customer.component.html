@@ -1,0 +1,218 @@
+<div *ngIf="showTable() && rows().length === 0; else tableBlock"
+  class="d-flex align-items-center justify-content-center py-5">
+  <div class="text-center">
+    <div class="d-inline-flex justify-content-center align-items-center rounded-4">
+      <img class="image-width" src="images/customer-gift.gif" alt="gift" />
+    </div>
+    <h6 class="fw-semibold mb-2 text-primary fs-18">No Customer Yet</h6>
+    <p class="text-grey mb-3 text-center">
+      You haven’t added any customers yet.<br />Start by adding your first one!
+    </p>
+  </div>
+</div>
+
+<ng-template #tableBlock>
+  <div class="px-2 px-lg-5">
+
+    <div class="d-flex justify-content-between align-items-center my-4">
+      <div>
+        <h5 class="fw-medium fs-22 mb-0">Customer Management</h5>
+        <p class="text-muted mb-0 mt-1">Manage your loyalty program members</p>
+      </div>
+
+      <input type="text" class="form-control shadow-none search-width" placeholder="Search customers..." (input)="onSearch($event)"
+      />
+    </div>
+
+    <div *ngIf="filteredRows().length === 0" class="text-center py-5 border rounded">
+      <p class="mb-0 text-muted">No customers found.</p>
+    </div>
+
+    <div *ngIf="filteredRows().length > 0" class="table-responsive pt-3">
+      <table class="table bm-table align-middle mb-0">
+        <thead>
+          <tr class="text-center">
+            <th class="ps-3 fw-medium fs-17">Customer Name</th>
+            <th class="fw-medium fs-17">Email</th>
+            <th class="fw-medium fs-17">Membership Type</th>
+            <th class="fw-medium fs-17">Phone</th>
+            <th class="fw-medium fs-17">Reward</th>
+            <th class="fw-medium fs-17">Action</th>
+          </tr>
+        </thead>
+
+        <tbody class="bg-white">
+          <tr class="text-center" *ngFor="let row of pagedItems(); trackBy: trackByEmail">
+            <td class="ps-3 fw-medium text-muted fs-15">{{ row.name }}</td>
+            <td class="text-muted">{{ row.email }}</td>
+
+            <td class="text-muted">
+              <span class="px-3 py-2 rounded-pill" [ngClass]="{
+                  'bg-danger bg-opacity-10 text-danger': row.subscription === 'Starter',
+                  'bg-secondary bg-opacity-25': row.subscription === 'Pro',
+                  'bg-success bg-opacity-25 text-success': row.subscription === 'Enterprise'
+                }">
+                {{ row.subscription || 'N/A' }}
+              </span>
+            </td>
+
+            <td class="text-muted">{{ row.phone || 'N/A' }}</td>
+            <td class="text-muted">{{ row.reward }}</td>
+
+            <td>
+              <div class="d-flex gap-2">
+
+                <button class="btn btn-sm bg-primary bg-opacity-25 text-primary p-0 btn-width"
+                  (click)="openViewModal(row)">
+                  <i class="ri-eye-line fs-5"></i>
+                </button>
+
+                <button class="btn btn-sm bg-success bg-opacity-25 text-success p-0 btn-width"
+                  (click)="openEditModal(row)">
+                  <i class="ri-edit-line fs-5"></i>
+                </button>
+
+                <button class="btn btn-sm bg-danger bg-opacity-25 text-danger p-0 btn-width"
+                  (click)="deleteCustomer(row)">
+                  <i class="ri-delete-bin-line fs-5"></i>
+                </button>
+
+
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+
+    <nav *ngIf="filteredRows().length > 0" class="position-fixed bottom-0 start-0 end-0 bg-white py-2 z-3">
+
+      <ul class="pagination justify-content-center gap-2 mb-0">
+
+        <li class="page-item" [class.disabled]="page() === 1">
+          <a class="page-link rounded-2" href="#" (click)="prev(); $event.preventDefault()">
+            <i class="ri-arrow-left-s-line"></i>
+          </a>
+        </li>
+        <li *ngFor="let p of pageNumbers()" class="page-item" [class.active]="p === page()">
+          <a class="page-link rounded-2" href="#" (click)="setPage(p); $event.preventDefault()">
+            {{ p }}
+          </a>
+        </li>
+        <li class="page-item" [class.disabled]="page() === totalPages()">
+          <a class="page-link rounded-2" href="#" (click)="next(); $event.preventDefault()">
+            <i class="ri-arrow-right-s-line"></i>
+          </a>
+        </li>
+
+      </ul>
+
+    </nav>
+
+  </div>
+</ng-template>
+
+<!-- VIEW MODAL -->
+<div class="modal-backdrop fade show" *ngIf="showViewModal()"></div>
+
+<div class="modal fade show d-block" *ngIf="showViewModal()" tabindex="-1" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-2">
+
+      <div class="modal-header border-0 py-2">
+        <button class="btn-close" (click)="closeViewModal()"></button>
+      </div>
+      <h4 class="modal-title text-center fw-medium fs-18">Customer Details</h4>
+      <div class="modal-body">
+        <div class="mb-2">
+          <label class="text-grey">Customer Name</label>
+          <input class="form-control shadow-none text-muted" [value]="selectedCustomer()?.name || ''" readonly />
+        </div>
+
+        <div class="mb-2">
+          <label class="text-grey">Email</label>
+          <input class="form-control shadow-none text-muted" [value]="selectedCustomer()?.email || ''" readonly />
+        </div>
+
+        <div class="mb-2">
+          <label class="text-grey">Membership Type</label>
+          <input class="form-control shadow-none text-muted" [value]="selectedCustomer()?.subscription || 'N/A'" readonly />
+        </div>
+
+        <div class="mb-2">
+          <label class="text-grey">Phone</label>
+          <input class="form-control shadow-none text-muted" [value]="selectedCustomer()?.phone || 'N/A'" readonly />
+        </div>
+
+        <div class="mb-2">
+          <label class="text-grey">Reward</label>
+          <input class="form-control shadow-none text-muted" [value]="selectedCustomer()?.reward || ''" readonly />
+        </div>
+      </div>
+
+      <div class="modal-footer border-0">
+        <button class="btn btn-primary" (click)="closeViewModal()">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-backdrop fade show" *ngIf="showEditModal()"></div>
+
+<div class="modal fade show d-block" *ngIf="showEditModal()" tabindex="-1" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-2">
+
+      <div class="modal-header border-0 py-2">
+        <button class="btn-close" (click)="closeEditModal()"></button>
+      </div>
+      <h4 class="modal-title text-center fw-medium fs-18">Edit Customer</h4>
+
+      <div class="modal-body">
+        <div class="mb-2">
+          <label class="text-grey">Customer Name</label>
+          <input class="form-control shadow-none text-muted" [(ngModel)]="editModel.name" />
+        </div>
+
+        <div class="mb-2">
+          <label class="text-grey">Email</label>
+          <input class="form-control shadow-none text-muted" [(ngModel)]="editModel.email" />
+        </div>
+
+        <div class="mb-2">
+          <label class="text-grey">Membership Type</label>
+          <select class="form-control shadow-none text-muted" [(ngModel)]="editModel.subscription">
+            <option value="">--select option--</option>
+            <option value="Starter">Starter</option>
+            <option value="Pro">Pro</option>
+            <option value="Enterprise">Enterprise</option>
+          </select>
+        </div>
+
+        <div class="mb-2">
+          <label class="text-grey">Phone</label>
+          <input class="form-control shadow-none text-muted" [(ngModel)]="editModel.phone" />
+        </div>
+
+        <div class="mb-2">
+          <label class="text-grey">Reward</label>
+          <input class="form-control shadow-none text-muted" [(ngModel)]="editModel.reward" />
+        </div>
+      </div>
+
+      <div class="modal-footer border-0">
+        <button class="btn btn-primary" (click)="closeEditModal()" [disabled]="isSaving()">
+          Cancel
+        </button>
+        <button class="btn btn-primary" (click)="saveEdit()" [disabled]="isSaving()">
+          <span *ngIf="!isSaving()">Save</span>
+          <span *ngIf="isSaving()">Saving...</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

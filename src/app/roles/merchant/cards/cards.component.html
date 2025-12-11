@@ -1,0 +1,72 @@
+<div *ngIf="cards.length > 0" class="px-2 px-lg-5 py-3">
+  <button [routerLink]="['/merchant/business']" class="btn btn-primary float-end mt-2">
+    <i class="ri-add-line me-1"></i>Add Card
+  </button>
+
+  <div class="row g-3 mt-7">
+    <div class="col-12 col-md-6 col-lg-4" *ngFor="let c of cards; let i = index">
+      <div class="card border-0" [ngStyle]="{
+          'position': 'relative',
+          'background-image': 'url(' + c.bgImage + ')',
+          'background-size': 'cover',
+          'background-position': 'center',
+          'color': c.design && c.design.colors ? c.design.colors.text_color : ''
+        }">
+        <div class="overlay rounded" [ngStyle]="{
+            'position': 'absolute',
+            'top': '0',
+            'left': '0',
+            'width': '100%',
+            'height': '100%',
+            'background-color': c.design?.colors?.background_color,
+            'opacity': '0.5',
+            'z-index': '1'
+          }">
+        </div>
+
+        <div class="card-body p-3 rounded-3" style="position: relative; z-index: 2;">
+          <div class="d-flex align-items-start gap-3">
+            <div class="flex-grow-1">
+              <div class="d-flex align-items-center justify-content-center overflow-hidden mt-2 w-h">
+                <img [src]="c.logoImage" class="w-100 h-100 object-fit-cover rounded-1 border border-2 border-white"
+                     alt="Logo">
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <div class="text-light mb-0 opacity">Business Name</div>
+            <div class="fs-14 fw-semibold" [ngStyle]="{ 'color': c.design?.colors?.label_color}">
+              {{ c.businessName }}
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-start mt-2">
+            <div>
+              <div class="text-light opacity">Reward</div>
+              <div class="fs-14 fw-semibold" [ngStyle]="{ 'color': c.design?.colors?.label_color}">
+                {{ c.rewardText || 'N/A' }}
+              </div>
+            </div>
+
+            <div class="text-end">
+              <div class="text-light opacity">Card</div>
+              <div class="fs-14 fw-semibold">{{ c.membership_type }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end align-items-center mt-3">
+        <div class="d-flex gap-2">
+          <button class="btn btn-success" (click)="edit(i)">
+            <i class="ri-edit-line"></i>
+          </button>
+          <button class="btn btn-primary" (click)="delete(i)">
+            <i class="ri-delete-bin-6-line"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

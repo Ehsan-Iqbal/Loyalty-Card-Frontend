@@ -1,0 +1,45 @@
+:host {
+  display: block;
+}
+.card-wrapper {
+  max-width: 640px;
+}
+
+// .card-overlay {
+//   background: linear-gradient(
+//     to right,
+//     rgba(90, 0, 80, 0.85),
+//     rgba(90, 0, 80, 0.85)
+//   );
+// }
+
+.logo-wrapper {
+  width: 56px;
+  height: 56px;
+}
+
+.value {
+  font-size: 14px;
+  font-weight: 700;
+}
+.card-bg {
+  position: relative;
+  background-size: cover;    
+  background-position: center;
+  height: 100%;            
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none; 
+  z-index: 1;           
+}
+
+.card-content {
+  position: relative;
+  z-index: 2;            
+}

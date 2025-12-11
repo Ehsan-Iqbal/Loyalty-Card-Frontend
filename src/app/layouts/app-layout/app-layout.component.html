@@ -1,0 +1,72 @@
+<div class="d-flex flex-column min-vh-100">
+  <app-header></app-header>
+
+  <div class="d-flex justify-content-center flex-nowrap gap-3 gap-lg-5 bg-secondary p-3" *ngIf="showTabs">
+
+    <!-- owner -->
+    <ng-container *ngIf="roleKey === 'owner'; else merchantTabs">
+      <div class="tab-link fw-medium d-flex align-items-center gap-2 cursor-pointer flex-shrink-0" routerLink="."
+        routerLinkActive="text-primary" [routerLinkActiveOptions]="{ exact: true }" tabindex="0" role="link">
+        <i class="ri-dashboard-line d-none d-md-inline"></i>
+        <span>Dashboard</span>
+      </div>
+
+      <div class="tab-link fw-medium d-flex align-items-center gap-2 cursor-pointer flex-shrink-0"
+        routerLink="/owner/subscription" routerLinkActive="text-primary" tabindex="0" role="link">
+        <i class="ri-vip-crown-line d-none d-md-inline"></i>
+        <span>Subscription</span>
+      </div>
+      @if(roleKey==='owner')
+      {
+      <div class="tab-link fw-medium d-flex align-items-center gap-2 cursor-pointer flex-shrink-0"
+        routerLink="/owner/setting" routerLinkActive="text-primary" tabindex="0" role="link">
+        <i class="ri-money-dollar-circle-line d-none d-md-inline"></i>
+        <span>Settings</span>
+      </div>
+      }
+
+    </ng-container>
+
+    <!-- merchant -->
+    <ng-template #merchantTabs>
+      <div class="d-flex flex-nowrap overflow-x-scroll hide-scrollbar gap-4">
+
+        <div class="tab-link fw-medium d-flex align-items-center gap-2 cursor-pointer flex-shrink-0"
+          routerLink="/merchant" routerLinkActive="text-primary" [routerLinkActiveOptions]="{ exact: true }"
+          tabindex="0" role="link">
+          <i class="ri-dashboard-line"></i>
+          <span>dahshbaord</span>
+        </div>
+
+        <div class="tab-link fw-medium d-flex align-items-center gap-2 cursor-pointer flex-shrink-0"
+          routerLink="/merchant/cards" routerLinkActive="text-primary" tabindex="0" role="link">
+          <i class="ri-bank-card-line"></i>
+          <span>Cards</span>
+        </div>
+
+        <div class="tab-link fw-medium d-flex align-items-center gap-2 cursor-pointer flex-shrink-0"
+          routerLink="/merchant/customer" routerLinkActive="text-primary" tabindex="0" role="link">
+          <i class="ri-database-2-line"></i>
+          <span>Customer</span>
+        </div>
+
+        <div class="tab-link fw-medium d-flex align-items-center gap-2 cursor-pointer flex-shrink-0"
+          routerLink="/merchant/subscription-merchant" routerLinkActive="text-primary" tabindex="0" role="link">
+          <i class="ri-vip-crown-line"></i>
+          <span>Subscription</span>
+        </div>
+
+        <div class="tab-link fw-medium d-flex align-items-center gap-2 cursor-pointer flex-shrink-0"
+          routerLink="/merchant/settings" routerLinkActive="text-primary" tabindex="0" role="link">
+          <i class="ri-settings-3-line"></i>
+          <span>Settings</span>
+        </div>
+      </div>
+    </ng-template>
+
+  </div>
+
+  <div class="flex-grow-1">
+    <router-outlet></router-outlet>
+  </div>
+</div>

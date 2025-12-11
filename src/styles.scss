@@ -1,0 +1,47 @@
+@font-face {
+  font-family: 'Outfit';
+  src: url("../public/fonts/font-family/Outfit-Regular.ttf") format("truetype");
+}
+
+html, body {
+  font-family: 'Outfit', sans-serif;
+  overflow-x: hidden !important;
+  overflow-y: auto;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+:root,
+[data-bs-theme='light'] {
+  --bs-primary: #860752 !important;
+  --bs-primary-rgb: 134, 7, 82 !important;
+  --bs-primary-hover: #5F053A;
+  --bs-primary-active: #420328;
+  --bs-primary-disabled: #FBABDA;
+
+  --bs-secondary: #FFE6C9;
+  --bs-secondary-rgb: 255, 230, 201;
+  --bs-secondary-hover: #FFD8AA;
+  --bs-secondary-active: #FFCE96;
+  --bs-secondary-disabled: #FFF4E8;
+
+  --bs-purple: #1E293B !important;
+  --bs-purple-rgb: 30, 41, 59 !important;
+  --bs-purple-hover: #121923;
+  --bs-purple-active: #090D12;
+  --bs-purple-disabled: #8098BE;
+
+  --bs-grey: #828282 !important;
+  --bs-grey-rgb: 130, 130, 130 !important;
+  --bs-grey-hover: #737373;
+  --bs-grey-active: #686868;
+  --bs-grey-disabled: #CECECE;
+
+  --bs-light-grey: #D2D2D2 !important;
+  --bs-light-grey-rgb: 210, 210, 210 !important;
+  --bs-light-grey-hover: #C5C5C5;
+  --bs-light-grey-active: #BEBEBE;
+  --bs-light-grey-disabled: #F8F8F8;
+}

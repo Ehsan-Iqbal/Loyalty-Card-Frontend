@@ -1,0 +1,127 @@
+.progress-thin { height: .35rem; border-radius: 2rem; }
+
+.category-card, .choice-card {
+  transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+  outline: 0;
+   --bs-card-border-color: transparent !important; 
+  border-color: transparent;  
+}
+
+.category-card:hover, .choice-card:hover {
+  border-color: var(--bs-primary);
+}
+
+.category-card.active, .choice-card.active {
+  border-color: var(--bs-primary);
+  background-color: var(--bs-primary-bg-subtle);
+}
+
+.wizard-rail {
+  height: .35rem;         
+}
+
+.rail-seg {
+  flex: 1;
+  background: var(--bs-secondary-bg);                
+}
+
+.rail-seg.active {
+  background: var(--bs-primary);
+}
+.icon-width{
+  width: 38px;
+  height: 38px;
+}
+.custom {
+  background-color: #FFF2E4; 
+}
+.custom-input {
+  background-color: #FFF2E4; 
+}
+
+.custom-input::placeholder {
+  color: #D2D2D2; 
+  opacity: 1; 
+}
+
+.custom-input:focus {
+  border-color: var(--bs-primary) !important;
+  outline: none !important;
+}
+.form-control:focus{
+  border-color: var(--bs-primary) !important;
+  outline: none !important;
+}
+.reward-card {
+  background: linear-gradient(
+    to right,
+    #7d0560 40%,             
+    #7d007c 60% 
+  );
+}
+.bg-color{
+  background-color: #992c7a;
+}
+.form-check-input:not(:checked) {
+  background-color: #fff !important;
+}
+.form-check-input.switch-danger:checked {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+}
+.form-check-input.check-primary:checked {
+  background-color: var(--bs-primary);
+}
+.border-dashed{
+  border-style: dashed;
+  color: rgb(224 224 224);
+}
+.width{
+  width: 6rem;
+}
+
+.icons-container {
+  grid-template-columns: repeat(auto-fill, 45px);
+  max-height: 350px;
+}
+
+.icon-box {
+  width: 40px;
+  height: 35px;
+  transition: 0.25s ease-in-out;
+  color: #4b4b4b;
+}
+
+.icon-box:hover {
+  background: var(--bs-primary);
+  color: #fff;
+  border-color: var(--bs-primary);
+}
+
+.icon-box.active {
+  background: var(--bs-primary);
+  color: #fff;
+  border-color: var(--bs-primary);
+}
+
+
+.btn.border-primary:hover {
+  background-color: var(--bs-primary) !important;
+  color: #fff !important;
+  border-color: var(--bs-primary) !important;
+  transition: 0.3s ease;
+}
+
+.active-field {
+  background-color: var(--bs-primary) !important;
+  color: #fff !important;
+  border-color: var(--bs-primary) !important;
+}
+.disabled {
+    pointer-events: none;
+    opacity: 0.5; 
+}
+.card.active {
+  border: 1px solid #860752;  
+  background-color: #FFE6C9; 
+}

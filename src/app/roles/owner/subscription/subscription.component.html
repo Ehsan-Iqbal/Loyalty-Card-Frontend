@@ -1,0 +1,222 @@
+<div class="container-fluid px-2 px-lg-5 py-4">
+
+  <div class="d-flex align-items-start align-items-md-center justify-content-between gap-3 flex-column flex-md-row">
+    <div>
+      <h5 class="fw-bold mb-1 fs-24">Subscription &amp; Billing</h5>
+      <p class="text-gray fs-16 mbl-font mb-0">Manage platform pricing plans and billing records.</p>
+
+    </div>
+    <button type="button" class="btn btn-sm btn-primary btn-sm text-secondary rounded-2 fs-18" (click)="openAddModal()">
+      <i class="ri-add-line"></i> Add New Plan
+    </button>
+  </div>
+
+  <!-- Section title -->
+  <h6 class="mt-4 mb-3 fs-18 fw-semibold">Pricing Plan Overview</h6>
+
+  <div class="row g-4">
+
+  <div class="col-12 col-md-6 col-lg-4" *ngFor="let plan of plans">
+    <div class="card shadow-sm rounded-4 overflow-hidden plan-card h-100">
+
+      <div class="card-body">
+
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <div>
+            <h6 class="mb-1 fw-semibold fs-18">{{ plan.name }}</h6>
+
+            <div class="d-flex align-items-baseline mt-3">
+              <span class="mb-0 fw-semibold fs-17">
+                ${{ plan.price }}
+              </span>
+              <span class="text-gray fs-16">/{{ plan.billing_period || 'Month' }}</span>
+            </div>
+          </div>
+
+          <span class="bg-success bg-opacity-25 text-success rounded-pill fs-15 px-3 py-1">
+            {{ plan.status ? 'Active' : 'Inactive' }}
+          </span>
+        </div>
+        <div class="bg-secondary rounded-3 p-3 my-3">
+          <ul class="list-unstyled mb-0">
+
+            <li class="d-flex align-items-center gap-2 mb-2">
+              <i class="ri-check-line fs-5 text-success lh-1"></i>
+              <span class="fs-16">
+                Up to {{ plan.limits?.max_customers }} customers
+              </span>
+            </li>
+
+            <li class="d-flex align-items-center gap-2 mb-2">
+              <i class="ri-check-line fs-5 text-success lh-1"></i>
+              <span class="fs-16">
+                Up to {{ plan.limits?.max_loyalty_cards }} loyalty cards
+              </span>
+            </li>
+
+            <li class="d-flex align-items-center gap-2 mb-2">
+              <i class="ri-check-line fs-5 text-success lh-1"></i>
+              <span class="fs-16">Dedicated Support</span>
+            </li>
+
+          </ul>
+        </div>
+
+        <!-- <div>
+          <small class="text-gray d-block">Active Subscribers</small>
+          <div class="text-primary fw-semibold fs-17">0</div>
+        </div> -->
+
+      </div>
+
+      <!-- Buttons -->
+      <div class="card-footer bg-white border-0 pt-0 pb-3">
+        <div class="d-flex justify-content-between gap-5">
+
+          <button type="button"
+        class="btn btn-secondary border-0 rounded-2 text-gray fw-medium fs-16 w-100"
+        (click)="openEditModal(plan)">
+  <i class="ri-edit-line me-1"></i> Edit
+</button>
+
+          <button type="button"
+                  class="bg-danger bg-opacity-25 text-danger border-0 rounded-2 w-100 d-inline-flex align-items-center justify-content-center fw-medium gap-2 py-2 fs-16 bg-btn"
+                    (click)="deletePlan(plan)">
+            <i class="ri-pause-fill fs-5"></i>
+            Delete
+          </button>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<!-- edit modal -->
+
+<div class="modal-backdrop fade show" *ngIf="showEditModal"></div>
+
+<div class="modal fade show d-block" *ngIf="showEditModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-2">
+
+      <div class="modal-header border-0">
+         
+        <button class="btn-close" (click)="closeEditModal()"></button>
+      </div>
+
+      <h4 class="modal-title fw-medium text-center fs-19">Edit Plan</h4>
+      <div class="modal-body">
+
+        <div class="mb-3">
+          <label class="fw-medium text-muted">Plan Name</label>
+          <input type="text" class="form-control shadow-none text-muted"
+                 [(ngModel)]="editModel.name" readonly>
+        </div>
+
+        <div class="mb-3">
+          <label class="fw-medium text-muted">Price</label>
+          <input type="number" class="form-control shadow-none text-muted"
+                 [(ngModel)]="editModel.price">
+        </div>
+
+        <div class="mb-3">
+          <label class="fw-medium text-muted">Billing Period</label>
+          <select class="form-control shadow-none text-muted" [(ngModel)]="editModel.billing_period">
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="fw-medium text-muted">Max Customers</label>
+          <input type="number" class="form-control shadow-none text-muted"
+                 [(ngModel)]="editModel.max_customers">
+        </div>
+
+        <div class="mb-3">
+          <label class="fw-medium text-muted">Max Loyalty Cards</label>
+          <input type="number" class="form-control shadow-none text-muted"
+                 [(ngModel)]="editModel.max_loyalty_cards">
+        </div>
+
+      </div>
+
+      <div class="modal-footer border-0">
+        <button class="btn btn-primary" (click)="closeEditModal()">Close</button>
+        <button class="btn btn-primary" (click)="savePlan()" [disabled]="isSaving">
+          <span *ngIf="!isSaving">Save</span>
+          <span *ngIf="isSaving">Saving...</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- save modal -->
+
+<!-- ADD PLAN MODAL -->
+<div class="modal-backdrop fade show" *ngIf="showAddModal"></div>
+
+<div class="modal fade show d-block" *ngIf="showAddModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-2">
+
+      <div class="modal-header border-0">
+        <button class="btn-close" (click)="closeAddModal()"></button>
+      </div>
+
+      <h4 class="modal-title fw-medium text-center fs-19">Add New Plan</h4>
+
+      <div class="modal-body">
+
+        <div class="mb-3">
+          <label class="fw-medium text-muted">Plan Name</label>
+          <input type="text" class="form-control shadow-none text-muted"
+                 [(ngModel)]="addModel.name">
+        </div>
+
+        <div class="mb-3">
+          <label class="fw-medium text-muted">Price</label>
+          <input type="number" class="form-control shadow-none text-muted"
+                 [(ngModel)]="addModel.price">
+        </div>
+
+        <div class="mb-3">
+          <label class="fw-medium text-muted">Billing Period</label>
+          <select class="form-control shadow-none text-muted" [(ngModel)]="addModel.billing_period">
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="fw-medium text-muted">Max Customers</label>
+          <input type="number" class="form-control shadow-none text-muted"
+                 [(ngModel)]="addModel.max_customers">
+        </div>
+
+        <div class="mb-3">
+          <label class="fw-medium text-muted">Max Loyalty Cards</label>
+          <input type="number" class="form-control shadow-none text-muted"
+                 [(ngModel)]="addModel.max_loyalty_cards">
+        </div>
+
+      </div>
+
+      <div class="modal-footer border-0">
+        <button class="btn btn-primary" (click)="closeAddModal()">Close</button>
+        <button class="btn btn-primary" (click)="createPlan()" [disabled]="isSaving">
+          <span *ngIf="!isSaving">Create</span>
+          <span *ngIf="isSaving">Saving...</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

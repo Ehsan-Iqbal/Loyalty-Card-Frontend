@@ -1,0 +1,13 @@
+.tab-link:focus,
+.tab-link:focus-visible {
+  color: var(--bs-primary) !important;
+}
+.hide-scrollbar {
+  overflow-x: scroll;
+  -ms-overflow-style: none;  
+  scrollbar-width: none; 
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;  
+}

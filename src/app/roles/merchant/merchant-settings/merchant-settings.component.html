@@ -1,0 +1,183 @@
+<div class="container-fluid px-2 px-lg-5 py-6">
+    <div class="bg-white profile-wrap">
+        <!-- Tabs -->
+        <ul class="nav nav-pills mb-4 flex-nowrap gap-4 flex-lg-wrap" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button
+                    class="btn btn-link p-0 m-0 d-inline-flex align-items-center text-nowrap flex-shrink-0 fw-medium text-decoration-none fs-18"
+                    [ngClass]="{ 'active-tab': activeTab === 'profile', 'text-grey': activeTab !== 'profile' }"
+                    (click)="setActiveTab('profile')" type="button" role="tab" aria-controls="tab-profile"
+                    [attr.aria-selected]="activeTab === 'profile'">
+                    Personal Info
+                </button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <button
+                    class="btn btn-link p-0 m-0 d-inline-flex align-items-center text-nowrap flex-shrink-0 fw-medium text-decoration-none fs-18"
+                    [ngClass]="{ 'active-tab': activeTab === 'password', 'text-grey': activeTab !== 'password' }"
+                    (click)="setActiveTab('password')" type="button" role="tab" aria-controls="tab-password"
+                    [attr.aria-selected]="activeTab === 'password'">
+                    Password
+                </button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <button
+                    class="btn btn-link p-0 m-0 d-inline-flex align-items-center text-nowrap flex-shrink-0 fw-medium text-decoration-none fs-18"
+                    [ngClass]="{ 'active-tab': activeTab === '2fa', 'text-grey': activeTab !== '2fa' }"
+                    (click)="setActiveTab('2fa')" type="button" role="tab" aria-controls="tab-2fa"
+                    [attr.aria-selected]="activeTab === '2fa'">
+                    <span class="d-inline d-md-none">2FA</span>
+                    <span class="d-none d-md-inline">Two-Factor Authentication</span>
+                </button>
+            </li>
+
+        </ul>
+
+        <div class="tab-content" id="merchantSettingsTabsContent">
+            <!-- PROFILE TAB -->
+            <div id="tab-profile" class="tab-pane fade" [class.active]="activeTab === 'profile'"
+                [class.show]="activeTab === 'profile'">
+                <div class="py-2 py-lg-2">
+                    <div class="card rounded-2 mb-5">
+                        <div class="card-body d-flex justify-content-between align-items-center section-gap flex-wrap">
+                            <div class="d-flex align-items-center section-gap">
+                                <img [src]="profileImage" alt="Avatar" class="rounded-circle object-fit-cover width" />
+                                <a href="#" class="text-black fw-normal text-decoration-none hover-underline"
+                                    (click)="changeProfileImage($event)">
+                                    Change Profile Image
+                                </a>
+                                <input type="file" #fileInput accept="image/*" style="display:none"
+                                    (change)="onFileSelected($event)" />
+                            </div>
+                            <!-- <button type="button" class="btn btn-primary d-inline-flex align-items-center">
+                                <i class="ri-logout-box-line me-1"></i>Logout
+                            </button> -->
+                        </div>
+                    </div>
+
+                    <div class="card rounded-2">
+                        <div class="card-body">
+                            <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+                                <div class="row g-3">
+                                    <div class="col-12 col-lg-6">
+                                        <label class="form-label text-grey mb-0">First Name</label>
+                                        <input type="text" class="form-control shadow-none text-grey fs-15"
+                                            formControlName="first_name" placeholder="Enter first name" />
+                                    </div>
+
+                                    <div class="col-12 col-lg-6">
+                                        <label class="form-label text-grey mb-0">Last Name</label>
+                                        <input type="text" class="form-control shadow-none text-grey fs-15"
+                                            formControlName="last_name" placeholder="Enter last name" />
+                                    </div>
+
+                                    <div class="col-12 col-lg-6">
+                                        <label class="form-label text-grey mb-0">Email</label>
+                                        <input type="email" class="form-control shadow-none text-grey fs-15"
+                                            formControlName="email" placeholder="Enter email" />
+                                    </div>
+
+                                    <div class="col-12 col-lg-6">
+                                        <label class="form-label text-grey mb-0">Role</label>
+                                        <input type="text" class="form-control shadow-none text-grey fs-15"
+                                            formControlName="role" placeholder="Role" readonly />
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-end mt-4">
+                                    <button type="submit"
+                                        class="btn btn-primary d-inline-flex align-items-center fs-18">
+                                        <i class="ri-save-3-line me-1"></i>Save Changes
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PASSWORD TAB -->
+            <div id="tab-password" class="tab-pane fade" [class.active]="activeTab === 'password'"
+                [class.show]="activeTab === 'password'">
+                <div class="pt-5">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-lg-7">
+                            <div class="card">
+                                <div class="card-body p-4 p-lg-4">
+                                    <form [formGroup]="passwordForm" (ngSubmit)="savePassword()">
+                                        <div class="mb-3">
+                                            <label for="currentPwd" class="form-label text-grey mb-0">Current
+                                                Password</label>
+                                            <div class="position-relative">
+                                                <input [type]="showCurrent ? 'text' : 'password'" id="currentPwd"
+                                                    class="form-control shadow-none pe-5 fs-15"
+                                                    placeholder="Enter your current password"
+                                                    formControlName="old_password" />
+                                                <span class="toggle-visibility cursor-pointer"
+                                                    (click)="toggleCurrent()">
+                                                    <i
+                                                        [class]="showCurrent ? 'ri-eye-line text-primary' : 'ri-eye-off-fill text-primary'"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="newPwd" class="form-label text-grey mb-0">New Password</label>
+                                            <div class="position-relative">
+                                                <input [type]="showNew ? 'text' : 'password'" id="newPwd"
+                                                    class="form-control shadow-none pe-5 fs-15"
+                                                    placeholder="Enter your new password"
+                                                    formControlName="new_password" />
+                                                <span class="toggle-visibility cursor-pointer" (click)="toggleNew()">
+                                                    <i
+                                                        [class]="showNew ? 'ri-eye-line text-primary' : 'ri-eye-off-fill text-primary'"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="confirmPwd" class="form-label text-grey mb-0">Confirm
+                                                Password</label>
+                                            <div class="position-relative">
+                                                <input [type]="showConfirm ? 'text' : 'password'" id="confirmPwd"
+                                                    class="form-control shadow-none pe-5 fs-15"
+                                                    placeholder="Re-enter your password"
+                                                    formControlName="confirm_password" />
+                                                <span class="toggle-visibility cursor-pointer"
+                                                    (click)="toggleConfirm()">
+                                                    <i
+                                                        [class]="showConfirm ? 'ri-eye-line text-primary' : 'ri-eye-off-fill text-primary'"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-end my-4">
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="ri-save-3-line me-2"></i>Save Changes
+                                            </button>
+                                        </div>
+                                        <hr />
+                                        <div class="text-center mt-1">
+                                            <a href="#" class="text-primary text-decoration-none hover-underline">
+                                                Delete Account
+                                            </a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 2fa-page -->
+            <div id="tab-2fa" class="tab-pane fade" [class.active]="activeTab === '2fa'"
+                [class.show]="activeTab === '2fa'">
+                <div class="pt-4">
+                    <app-two-fa-page></app-two-fa-page>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

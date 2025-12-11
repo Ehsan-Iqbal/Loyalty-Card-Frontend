@@ -1,0 +1,148 @@
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+.ribbon{
+  right: 16px;
+  top: 86px;
+  transform: rotate(90deg);
+  transform-origin: top right;
+}
+.price-card {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+.btn.bg-secondary.text-primary:hover {
+  background-color: var(--bs-primary) !important;
+  color: var(--bs-secondary) !important;
+  border: 1px solid var(--bs-secondary) !important;
+}
+.btn.btn-close-white.border.border-primary.text-primary:hover {
+  background-color: var(--bs-primary) !important;
+  color: var(--bs-secondary) !important;
+}
+.price-card:hover {
+  border-color: var(--bs-primary);  
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+.carousel-indicators [data-bs-target] {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #6c757d;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+.carousel-indicators .active {
+  background-color: #860752; 
+}
+blockquote::before {
+  position: absolute;
+  left: 0;
+  top: -10px;
+  font-size: 3rem;
+}
+@media (min-width: 992px) {
+  .image-width {
+    width: 60%;
+  }
+}
+@media (min-width: 768px) {
+  .reviews-section {
+    background-image: url('../../../../public/images/review-bg-image.png');
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 94px auto;
+  }
+}
+@media (max-width: 767.98px) {
+  .reviews-section {
+    background-image: none;
+  }
+}
+@media (max-width: 767.98px) {
+  .carousel-indicators {
+    position: static !important;
+    justify-content: center !important;
+    margin-top: 1rem;
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+}
+@media (min-width: 992px) {
+  .carousel-indicators {
+    margin-top: 2rem;
+  }
+}
+.responsive-img {
+  width: 100%;         
+  max-width: 100%;     
+}
+@media (min-width: 992px) { 
+  .responsive-img {
+    width: 75%;   
+  }
+}
+.faq-toggle{
+  border-left: 2px solid transparent;
+  transition: color .2s ease, border-color .2s ease;
+}
+.faq-toggle:not(.collapsed){
+  color: var(--bs-primary) !important;      
+  border-left-color: var(--bs-primary);     
+}
+.text-color{
+  color: #b55e86;
+}
+html {
+  scroll-behavior: smooth;
+}
+:root {
+  scroll-padding-top: 80px;
+}
+.loyalty-card {       
+  height: 280px;           
+}
+.card-img {
+  transition: transform 0.3s ease;
+}
+.overlay {
+  position: absolute;
+  inset: 0;                   
+  margin: 0 !important;        
+  opacity: 0;                
+  background-color: rgba(115, 36, 53, 0.6);
+  transition: opacity 0.3s ease;
+  border-radius: inherit;     
+}
+.overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0.75rem;              
+  border: 1px solid #fff;     
+  border-radius: inherit;      
+  opacity: 0;                  
+  transition: opacity 0.3s ease, border-color 0.3s ease;
+}
+
+.loyalty-card:hover .overlay {
+  opacity: 1;
+}
+
+.loyalty-card:hover .overlay::before {
+  opacity: 1;
+}
+
+.loyalty-card:hover .card-img {
+  transform: scale(1.05);
+}
+
+@media (max-width: 767.98px) {
+  .loyalty-card {
+    height: auto;
+  }
+}

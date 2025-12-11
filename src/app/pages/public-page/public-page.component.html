@@ -1,0 +1,64 @@
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="card shadow p-4" style="max-width: 450px; width: 100%">
+
+    <div *ngIf="loading" class="text-center py-4">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div class="mt-2">Loading card details...</div>
+    </div>
+
+    <div *ngIf="!loading">
+      <h3 class="text-center mb-3 fw-semibold fs-20">Publish Card</h3>
+
+      <p *ngIf="messageToCustomers" class="text-muted mb-3 text-center">
+        {{ messageToCustomers }}
+      </p>
+
+      <div *ngIf="trueFields.length === 0 && customQuestions.length === 0">
+        <p class="text-muted mb-0 text-center">
+          No active (true) fields or custom questions found for this card.
+        </p>
+      </div>
+      <form *ngIf="trueFields.length > 0 || customQuestions.length > 0" (ngSubmit)="onSubmit()" (keydown.enter)="onSubmit()" #pubForm="ngForm">
+
+        <ng-container *ngFor="let item of trueFields">
+          <ng-container *ngIf="fieldConfig[item.key] as cfg">
+            <div class="mb-3">
+              <label class="form-label mb-0">{{ cfg.label }}</label>
+              <input [type]="cfg.type" class="form-control shadow-none" [placeholder]="cfg.placeholder || ''"
+                [(ngModel)]="formData[item.key]" [name]="item.key" />
+            </div>
+          </ng-container>
+        </ng-container>
+
+        <div class="mb-3" *ngFor="let q of customQuestions; let i = index">
+          <label class="form-label mb-0">
+            {{ q.question_text || q.label || q.question || 'Question' }}
+          </label>
+          <input type="text" class="form-control shadow-none" [placeholder]="q.placeholder || 'Enter answer'"
+            [(ngModel)]="customAnswers[i]" [name]="'cq_' + i" />
+        </div>
+
+        <div *ngIf="submitSuccessMsg" class="alert alert-success py-2">
+          {{ submitSuccessMsg }}
+        </div>
+        <div *ngIf="submitErrorMsg" class="alert alert-danger py-2">
+          {{ submitErrorMsg }}
+        </div>
+        <div class="text-end mt-3">
+          <button class="btn btn-primary" type="submit" [disabled]="submitting">
+            <i class="ri-save-3-line me-1" *ngIf="!submitting"></i>
+            <span *ngIf="submitting">
+              <i class="spinner-border spinner-border-sm me-2"></i>
+            </span>
+            <span *ngIf="!submitting">
+              Submit
+            </span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

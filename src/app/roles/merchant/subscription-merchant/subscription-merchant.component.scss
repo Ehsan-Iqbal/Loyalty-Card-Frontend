@@ -1,0 +1,18 @@
+.plan-card {
+  box-shadow: var(--bs-box-shadow-sm) !important;
+  transition: box-shadow .25s ease;
+}
+
+.plan-card:hover,
+.plan-card:focus-within {
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.12) !important;
+}
+@media (max-width: 575.98px) {
+  .mbl-font { font-size: 13px !important; }
+}
+.bg-btn:hover {
+  background-color: rgba(220, 53, 69, 0.35) !important;
+}
+.form-control:focus {
+  border-color: var(--bs-primary);
+}

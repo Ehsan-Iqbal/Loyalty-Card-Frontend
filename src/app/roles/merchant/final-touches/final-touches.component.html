@@ -1,0 +1,227 @@
+<div class="container py-4 py-md-5" [ngClass]="selectedPreset">
+
+  <div class="text-center mb-4">
+    <h4 class="fw-bold mb-1">Add Final Touches</h4>
+    <p class="mb-0">Customize your loyalty card.</p>
+  </div>
+
+  <div class="row g-4">
+
+    <!-- LEFT SIDE -->
+    <div class="col-lg-5">
+      <div class="bg-secondary bg-opacity-50 rounded-3 h-100 p-3 p-md-4">
+
+        <h5 class="fw-semibold fs-17 mb-3">Logo & Hero Image</h5>
+
+        <div class="row g-3">
+
+          <!-- Logo -->
+          <div class="col-md-6">
+            <h6 class="fw-medium mb-2">Brand Logo</h6>
+
+            <label class="dropzone border-primary rounded-3 p-3 w-100 d-flex justify-content-center cursor-pointer">
+              <input type="file" accept="image/*" hidden (change)="onFileChange($event,'logo')">
+
+              <ng-container *ngIf="!logoDataUrl; else logoPrev">
+                <div class="small text-center">
+                  <i class="ri-folder-image-fill fs-5 bg-secondary text-primary p-2 rounded-circle"></i>
+                  <div class="text-gray">Drop your logo</div>
+                  <div class="text-primary"><u>Browse Files</u></div>
+                </div>
+              </ng-container>
+
+              <ng-template #logoPrev>
+                <img [src]="logoDataUrl" class="preview-img rounded-2 object-fit-cover" />
+              </ng-template>
+            </label>
+          </div>
+
+          <!-- Hero -->
+          <div class="col-md-6">
+            <h6 class="fw-medium mb-2">Hero Image</h6>
+
+            <label class="dropzone border-primary rounded-3 p-3 w-100 d-flex justify-content-center cursor-pointer">
+              <input type="file" accept="image/*" hidden (change)="onFileChange($event,'hero')">
+
+              <ng-container *ngIf="!heroDataUrl; else heroPrev">
+                <div class="small text-center">
+                  <i class="ri-landscape-fill fs-5 bg-secondary text-primary p-2 rounded-circle"></i>
+                  <div class="text-gray">Drop hero image</div>
+                  <div class="text-primary"><u>Browse Files</u></div>
+                </div>
+              </ng-container>
+
+              <ng-template #heroPrev>
+                <img [src]="heroDataUrl" class="preview-img" />
+              </ng-template>
+            </label>
+          </div>
+
+          <!-- Color Presets -->
+          <div class="col-12 mt-3">
+            <h6 class="fw-semibold fs-17">Choose Card Color</h6>
+
+            <div class="d-flex gap-3 flex-wrap mt-2">
+  <!-- Color Preset 1 -->
+  <div class="color-card rounded-2 cursor-pointer bg-primary" (click)="setPreset('preset-1')">
+    <div class="overlay-box bg-white overlay-top"></div>
+    <div class="overlay-box bg-secondary overlay-bottom"></div>
+  </div>
+
+  <!-- Color Preset 2 -->
+  <div class="color-card rounded-2 cursor-pointer bg-black" (click)="setPreset('preset-2')">
+    <div class="overlay-box bg-light overlay-top"></div>
+    <div class="overlay-box bg-color1 overlay-bottom"></div>
+  </div>
+
+  <!-- Color Preset 3 -->
+  <div class="color-card rounded-2 cursor-pointer bg-color2" (click)="setPreset('preset-3')">
+    <div class="overlay-box bg-white overlay-top"></div>
+    <div class="overlay-box bg-black overlay-bottom"></div>
+  </div>
+
+  <!-- Color Preset 4 -->
+  <div class="color-card cursor-pointer rounded-2 bg-secondary" (click)="setPreset('preset-4')">
+    <div class="overlay-box bg-black overlay-top"></div>
+    <div class="overlay-box bg-color3 overlay-bottom"></div>
+  </div>
+</div>
+
+<!-- Or Choose Your Own Theme -->
+<div class="col-12 mt-4">
+  <h6 class="fw-semibold fs-17 mb-3">Or choose your own theme</h6>
+
+  <div class="d-flex align-items-center gap-2 mb-2">
+    <div class="rounded border box-color"></div>
+    <span class="text-black fw-medium fs-16">Background color</span>
+  </div>
+
+  <div class="d-flex align-items-center gap-2 mb-2">
+    <div class="rounded border bg-chngeColor"></div>
+    <span class="text-black fw-medium fs-16">Text color</span>
+  </div>
+
+  <div class="d-flex align-items-center gap-2">
+    <div class="rounded border box2-color"></div>
+    <span class="text-black fw-medium fs-16">Label color</span>
+  </div>
+</div>
+
+            <div class="col-12 mt-4">
+
+              <h6 class="fw-semibold fs-17 mb-3">Or choose your own theme</h6>
+
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <div class="rounded border box-color">
+                </div>
+                <span class="text-black fw-medium fs-16">Background color</span>
+              </div>
+
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <div class="rounded border bg-chngeColor">
+                </div>
+                <span class="text-black fw-medium fs-16">Text color</span>
+              </div>
+
+              <div class="d-flex align-items-center gap-2">
+                <div class="rounded border box2-color">
+                </div>
+                <span class="text-black fw-medium fs-16">Label color</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PREVIEW -->
+    <div class="col-lg-7">
+      <div class="bg-secondary bg-opacity-50 rounded-3 p-3 p-md-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h6 class="fw-semibold fs-17">Apple Wallet Live Preview</h6>
+
+          <div class="btn-group btn-group-sm">
+            <button class="btn btn-ghost px-3 fs-16" [class.active]="appleFace==='front'"
+              (click)="setFace('front')">Front</button>
+
+            <button class="btn btn-ghost px-3 fs-16" [class.active]="appleFace==='back'"
+              (click)="setFace('back')">Back</button>
+          </div>
+        </div>
+
+        <div class="wallet rounded-3">
+
+          <!-- FRONT -->
+          <ng-container *ngIf="appleFace==='front'; else backSide">
+            <div class="p-3 hdr" [style.--hero-image]="heroDataUrl ? 'url(' + heroDataUrl + ')' : 'none'">
+
+              <div class="d-flex justify-content-between align-items-center">
+                <div class=" d-flex align-items-center justify-content-center">
+                  <img [src]="logoDataUrl || 'images/final-touches.png'"
+                    class="logo rounded-1 border border-2 border-white" />
+
+                </div>
+              </div>
+
+              <div class="mt-3">
+                <div class="text-gray">Business Name</div>
+                <div class="fs-6 fw-semibold text-white">{{ businessName }}</div>
+
+                <div class="mt-2">
+                  <div class="text-gray">Reward</div>
+                  <div class="fs-6 fw-semibold text-white">
+                    {{ rewardText }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </ng-container>
+
+          <!-- BACK -->
+          <ng-template #backSide>
+            <div class="p-4 rounded-3 back-card">
+
+              <div class="text-center">
+                <div class="fw-semibold">Loyalty Details</div>
+                <div
+                  class="rounded-circle bg-white bg-opacity-25 logo mt-2 mb-3 d-flex justify-content-center align-items-center">
+                  <i class="ri-gift-fill fs-3"></i>
+                </div>
+              </div>
+
+              <div class="row gy-2">
+                <div class="col-6 text-white-75">Business</div>
+                <div class="col-6 text-end">{{ businessName }}</div>
+
+                <div class="col-6 text-white-75">Reward</div>
+                <div class="col-6 text-end">{{ rewardText }}</div>
+              </div>
+
+            </div>
+          </ng-template>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="d-flex justify-content-end gap-3 mt-4">
+    <button class="btn btn-primary px-3 d-inline-flex align-items-center cursor-pointer" (click)="saveDesign()"
+      [disabled]="loadingSave">
+      <span *ngIf="!loadingSave"> <i class="ri-save-3-line me-1"></i> Save </span>
+
+      <span *ngIf="loadingSave">
+       Save <i class="spinner-border spinner-border-sm me-2" role="status"></i>
+      </span>
+    </button>
+    <button class="btn btn-primary" type="button" (click)="publishCard()" [disabled]="loadingPublish">
+      <span *ngIf="!loadingPublish"><i class="ri-bank-card-2-line me-1"></i> Publish Card</span>
+      <span *ngIf="loadingPublish">
+       Publish Card <i class="spinner-border spinner-border-sm me-2" role="status"></i>
+      </span>
+    </button>
+  </div>
+
+</div>

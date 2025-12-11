@@ -1,0 +1,46 @@
+<div class="d-flex align-items-center justify-content-center min-vh-100" *ngIf="data">
+  <div class="card-wrapper w-100 p-2">
+    <div class="card-bg position-relative bg-cover bg-center rounded-3 overflow-hidden" [ngStyle]="{
+           'background-image': data.hero ? 'url(' + data.hero + ')' : '',
+           'background-color': 'transparent'
+         }">
+
+      <div class="overlay" [ngStyle]="{
+            'background-color': data.bgColor ,
+            'opacity': 0.5
+         }"></div>
+
+      <div class="card-overlay">
+        <div class="p-3 card-content" [ngStyle]="{ 'color': data.textColor}">
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="rounded-2 overflow-hidden border-2 logo-wrapper">
+              <img [src]="data.logo" alt="Logo" class="w-100 h-100 object-fit-cover logo-img" />
+            </div>
+
+            <div class="p-1 bg-white">
+              <qrcode [qrdata]="data.qr" [width]="120"></qrcode>
+            </div>
+          </div>
+          <div class="mt-2">
+            <div class="label" [ngStyle]="{ 'color': data.labelColor }">Business Name</div>
+            <div class="value">{{ data.businessName }}</div>
+
+            <div class="label mt-3" [ngStyle]="{ 'color': data.labelColor}">Reward</div>
+            <div class="value d-flex justify-content-between align-items-center">
+              <span>{{ data.rewardText }}</span>
+              <button class="btn btn-primary fw-medium d-flex justify-content-between align-items-center"
+                (click)="addToGoogleWallet()" [disabled]="loading">
+                <span *ngIf="!loading">Add to Google Wallet</span>
+                <span *ngIf="loading" class="d-flex align-items-center">
+                  <span>Add to Google Wallet</span>
+                  <i class="ri-loader-3-line ri-spin ms-2"></i>
+                </span>
+              </button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

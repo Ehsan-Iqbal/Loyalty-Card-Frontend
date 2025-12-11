@@ -1,0 +1,572 @@
+<div class="container py-4 py-lg-3">
+
+    <div class="mb-1 fs-16 text-muted">
+        {{ step }} of {{ stepsTotal }} Steps Completed
+    </div>
+    <div class="wizard-rail d-flex gap-2 mb-5" role="progressbar" [attr.aria-valuenow]="step" aria-valuemin="1"
+        [attr.aria-valuemax]="stepsTotal">
+
+        <div *ngFor="let n of stepList" class="rounded-pill rail-seg" [ngClass]="{ 'active': n === step }">
+        </div>
+    </div>
+
+    <!-- STEP 1 -->
+    <ng-container *ngIf="step === 1">
+        <div class="text-center mb-2 mb-lg-5">
+            <h4 class="fw-bold mb-2 fs-24">Identify Your Business</h4>
+            <div class="fs-16 text-grey">
+                Choose the category that best describes your business. This helps
+                <p>us create
+                    the perfect loyalty program for your customers.</p>
+            </div>
+        </div>
+
+        <div class="row g-3 g-lg-4 row-cols-1 row-cols-md-2 row-cols-lg-4">
+            <div class="col" *ngFor="let c of categories">
+                <div type="button"
+                    class="card category-card h-100 text-center p-3 w-100 bg-secondary bg-opacity-50 rounded-3"
+                    [ngClass]="{ 'active': selectedCategoryId === c.id }" (click)="selectCategory(c.id)">
+                    <div class="d-flex flex-column gap-2 align-items-center">
+                        <div
+                            class="d-flex justify-content-center align-items-center bg-primary bg-opacity-10 rounded-2 icon-width">
+                            <i class="text-primary fs-4" [ngClass]="c.icon"></i>
+                        </div>
+                        <div class="fw-semibold fs-18 text-center">{{ c.title }}</div>
+                        <div class="fs-16 text-center">{{ c.desc }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="d-flex justify-content-end mt-4">
+            <button class="btn btn-primary px-3 cursor-pointer" (click)="saveCategoryAndNext()"
+                [disabled]="!selectedCategoryId || loading">
+                <span *ngIf="!loading">Next <i class="ri-arrow-right-line ms-2"></i></span>
+                <span *ngIf="loading">
+                    Next <i class="spinner-border spinner-border-sm me-2" role="status"></i>
+                </span>
+            </button>
+
+        </div>
+    </ng-container>
+
+    <!-- STEP 2 -->
+    <ng-container *ngIf="step === 2">
+        <div class="text-center mb-4 mb-lg-5">
+            <h4 class="fw-bold mb-2 f24">Add Business & Contact Info</h4>
+            <p class="mb-0 fs-16 text-grey">
+                Enter your business name and contact details to personalize <br />
+                your loyalty card.
+            </p>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8">
+                <div class="p-3 p-lg-4 bg-secondary bg-opacity-50 rounded-3">
+                    <div class="mb-3">
+                        <label class="form-label text-primary fw-medium mb-0">Business Name</label>
+                        <input class="form-control shadow-none custom-input" [(ngModel)]="businessName"
+                            placeholder="Enter your business name" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-primary fw-medium mb-0">Tagline</label>
+                        <input class="form-control shadow-none custom-input" [(ngModel)]="tagline"
+                            placeholder="Enter catchy tagline" />
+                    </div>
+                    <div class="mb-3 d-flex flex-wrap gap-3">
+                        <button type="button" class="btn" *ngFor="let f of availableFields" [ngClass]="{
+      'bg-primary text-white': isFieldActive(f.key),
+      'bg-secondary border border-primary text-primary': !isFieldActive(f.key)
+    }" (click)="toggleField(f)">
+                            {{ f.label }}
+                        </button>
+                    </div>
+                    <div *ngFor="let cf of customFields; let i = index" class="card border-0 mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn-close fs-10 mb-3" aria-label="Remove"
+                                    (click)="removeField(i)"></button>
+                            </div>
+                            <div class="row g-2 mb-2">
+                                <div class="col-12 col-md-6">
+                                    <input class="form-control shadow-none fs-14 py-3 text-gray" [(ngModel)]="cf.label"
+                                        placeholder="Label" readonly />
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <input class="form-control shadow-none fs-14 py-3 text-gray" [(ngModel)]="cf.value"
+                                        placeholder="Value" />
+                                </div>
+                            </div>
+                            <p class="text-muted small mb-2">
+                                Please fill in all the values for your added fields or remove them
+                            </p>
+                            <div class="form-check">
+                                <input class="form-check-input bg-primary text-white shadow-none border border-primary"
+                                    type="checkbox" id="tappable-{{ i }}" [(ngModel)]="cf.tappable" />
+                                <label class="form-check-label" for="tappable-{{ i }}">Tappable</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mt-4">
+                    <!-- <button class="btn btn-primary d-inline-flex align-items-center gap-2" (click)="back()">
+                        <i class="ri-arrow-left-line"></i><span>Back</span>
+                    </button> -->
+                    <button class="btn btn-primary d-inline-flex align-items-center gap-2 cursor-pointer"
+                        (click)="saveBusiness()" [disabled]="loading">
+                        <span *ngIf="!loading">Next</span>
+                        <i *ngIf="!loading" class="ri-arrow-right-line ms-2"></i>
+                        <span *ngIf="loading">
+                            Next <i class="spinner-border spinner-border-sm me-2" role="status"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+    <!-- STEP 3 -->
+    <ng-container *ngIf="step === 3">
+        <div class="text-center mb-4">
+            <h4 class="fw-bold mb-2 fs-24">Location-Based Alerts</h4>
+            <p class="mb-0 fs-16 text-grey">
+                Notify customers when they’re close to your business! A great way to <br> engage them and drive more
+                in-store visits.
+            </p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8">
+                <div class="p-3 p-lg-4 bg-secondary bg-opacity-50 rounded-3">
+
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input shadow-none switch-danger border border-primary" type="checkbox"
+                            id="switch-loc-alerts" [(ngModel)]="enableLocationAlerts" />
+                        <label class="form-check-label ms-2" [class.text-primary]="enableLocationAlerts"
+                            for="switch-loc-alerts">
+                            Enable Location-Based Alerts
+                        </label>
+                    </div>
+
+                    <div *ngIf="enableLocationAlerts" class="p-3 bg-white rounded-3 mb-3">
+                        <div class="fs-16">
+                            Send timely alerts to customers when they’re near your business! Location-based
+                            notifications keep your brand
+                            top of mind and encourage visits by highlighting nearby offers or promotions.
+                        </div>
+                    </div>
+
+                    <div *ngIf="!enableLocationAlerts" class="p-4 rounded-3 border-dashed text-center">
+                        <div><i class="ri-map-pin-line fs-3 text-gray"></i></div>
+                        <div class="text-gray">Add Location Alerts</div>
+                        <div class="mb-3 text-gray">
+                            Enable this feature to engage customers when they’re near your business
+                        </div>
+                        <span class="text-primary cursor-pointer" (click)="enableLocationAlerts = true">
+                            <i class="ri-map-pin-line me-1"></i> Enable Location
+                        </span>
+                    </div>
+
+                    <div *ngIf="enableLocationAlerts && locations.length === 0"
+                        class="p-4 rounded-3 border-dashed text-center">
+                        <div class="mb-2 text-gray"><i class="ri-map-pin-line fs-3 opacity-50"></i></div>
+                        <div class="mb-2 text-gray">Add Location Alerts</div>
+                        <span class="text-primary cursor-pointer" (click)="addLocation()">
+                            <i class="ri-add-line me-1"></i> Add Location
+                        </span>
+                    </div>
+
+                    <div *ngIf="enableLocationAlerts && locations.length > 0" class="d-grid gap-3">
+                        <div *ngFor="let loc of locations; let i = index" class="bg-white rounded-3 p-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="fw-semibold">Location {{ i + 1 }}</div>
+                                <button type="button" class="btn bg-primary bg-opacity-25 text-primary btn-sm"
+                                    (click)="removeLocation(i)">
+                                    <i class="ri-delete-bin-line"></i>
+                                </button>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label small text-primary mb-1">Address</label>
+                                <input class="form-control shadow-none custom-input bg-white" [(ngModel)]="loc.address"
+                                    placeholder="enter address" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label small text-primary mb-1">Notification radius (meters)</label>
+                                <div class="d-flex align-items-center gap-3">
+                                    <input type="range" class="form-range flex-grow-1 shadow-none" min="50" max="1000"
+                                        step="10" [(ngModel)]="loc.radius" />
+                                    <div class="text-muted small text-nowrap">
+                                        {{ loc.radius }} m ({{ metersToFeet(loc.radius) }} ft / {{
+                                        metersToYards(loc.radius) }} yd)
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="form-label small text-primary mb-1">Notification Message</label>
+                                <input class="form-control shadow-none custom-input bg-white" [(ngModel)]="loc.message"
+                                    placeholder="e.g. Welcome to our store!" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12 col-lg-8 mx-auto">
+                <div class="d-flex justify-content-end w-100">
+                    <button class="btn btn-primary d-inline-flex align-items-center gap-2 text-nowrap cursor-pointer"
+                        [disabled]="loading" (click)="saveLocation(true)">
+                        <span *ngIf="!loading">Next</span>
+                        <i *ngIf="!loading" class="ri-arrow-right-line" aria-hidden="true"></i>
+                        <span *ngIf="loading">
+                            Next <i class="spinner-border spinner-border-sm me-2" role="status"></i>
+                        </span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </ng-container>
+
+    <!-- STEP 4 -->
+    <ng-container *ngIf="step === 4">
+        <div class="text-center mb-4 mb-lg-5">
+            <h4 class="fw-bold mb-2 fs-24">Select Membership Type</h4>
+            <p class="mb-0 fs-16 text-grey">
+                Decide how your customers will access and use your loyalty card.
+            </p>
+        </div>
+
+        <div class="row g-3 g-lg-4 justify-content-center">
+            <div class="col-12 col-md-6 col-lg-3" *ngFor="let opt of membershipOptions">
+                <div class="card choice-card h-100 text-center p-3 w-100 bg-secondary bg-opacity-50 rounded-3"
+                    [ngClass]="{ 'active': selectedMembershipKey === opt.key }" (click)="selectMembership(opt)">
+                    <div class="d-flex flex-column gap-2 align-items-center">
+                        <div
+                            class="icon-wrap bg-primary bg-opacity-10 d-flex justify-content-center align-items-center rounded-2 icon-width">
+                            <i class="{{ opt.icon }} fs-3 text-primary"></i>
+                        </div>
+                        <div class="fw-semibold fs-18 text-center">{{ opt.title }}</div>
+                        <div class="fs-16 text-center">{{ opt.desc }}</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12 col-lg-6 mx-auto">
+                <div class="d-flex justify-content-end gap-3">
+                    <button class="btn btn-primary px-3 cursor-pointer" (click)="saveMembershipAndNext()"
+                        [disabled]="!selectedMembershipId || loading">
+                        <span *ngIf="!loading">Next <i class="ri-arrow-right-line ms-2"></i></span>
+                        <span *ngIf="loading">
+                            Next <i class="spinner-border spinner-border-sm me-2" role="status"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+
+    <!-- STEP 5 -->
+    <ng-container *ngIf="step === 5">
+        <div class="row g-4 mt-2">
+            <div class="col-12 col-lg-6">
+                <div class="p-3 p-lg-4 bg-secondary bg-opacity-50 rounded-3 h-100">
+
+                    <h6 class="fw-semibold mb-3 fs-17">Customize Reward Details</h6>
+                    <p class="text-muted mb-4 fs-16">
+                        Define how customers earn and redeem rewards. Keep it simple and motivating.
+                    </p>
+
+                    <div class="mb-3">
+                        <label class="form-label text-primary mb-0 fs-16">Reward Name <span
+                                class="text-primary">*</span></label>
+                        <input class="form-control shadow-none fs-14 py-3 border custom-input text-muted"
+                            placeholder="Enter reward name" name="rewardName" [(ngModel)]="rewardName" required />
+                    </div>
+
+                    <div class="row g-3">
+
+                        <div class="col-12">
+                            <label class="form-label text-primary mb-0 fs-16">Reward Type <span
+                                    class="text-primary">*</span></label>
+                            <select class="form-select shadow-none fs-14 py-3 border custom-input text-muted"
+                                name="rewardType" [(ngModel)]="selectedRewardType" required>
+                                <option value="" disabled selected>Select Reward Type</option>
+                                <option value="discount">Discount</option>
+                                <option value="points">Points</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12" *ngIf="selectedRewardType === 'discount'">
+                            <label class="form-label text-primary mb-0 fs-16">
+                                Reward Value <span class="text-primary">*</span>
+                            </label>
+
+                            <div class="input-group">
+                                <div class="position-relative flex-grow-1">
+                                    <input
+                                        class="form-control shadow-none fs-14 py-3 border text-muted pe-5 rounded-2 custom"
+                                        placeholder="Enter discount value" type="number" name="rewardValue"
+                                        [(ngModel)]="rewardValue" min="1" required />
+                                    <i
+                                        class="ri-percent-line position-absolute top-50 end-0 translate-middle-y me-2 text-muted"></i>
+                                </div>
+                                <span class="input-group-text fs-14 border-0 custom pe-2 rounded-end-2">
+                                    Off Next Purchase
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-12" *ngIf="selectedRewardType === 'points'">
+                            <label class="form-label text-primary mb-0 fs-16">
+                                Points Required to Redeem <span class="text-primary">*</span>
+                            </label>
+
+                            <input type="number" class="form-control shadow-none fs-14 py-3 border text-muted custom"
+                                placeholder="Enter points required" name="pointsRequired" [(ngModel)]="pointsRequired"
+                                min="1" required />
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label text-primary mb-0 fs-16">Description</label>
+                            <textarea rows="4"
+                                class="form-control shadow-none fs-14 py-3 border custom-input text-muted"
+                                placeholder="Enter description (optional)" name="rewardDescription"
+                                [(ngModel)]="rewardDescription"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <div class="p-3 p-lg-4 bg-secondary bg-opacity-50 rounded-3 h-100">
+
+                    <h6 class="fw-semibold mb-3 fs-17">Live Preview</h6>
+                    <p class="text-muted mb-4">See how your reward will appear to customers</p>
+
+
+                    <div class="p-3 rounded-3 text-white reward-card">
+                        <div class="d-flex justify-content-between text-white-50 small mb-2">
+                            <span class="d-inline-flex align-items-center gap-2 text-white">
+                                <i class="ri-gift-fill rounded-circle ..."></i>
+                                Reward Available
+                            </span>
+                            <div class="d-flex flex-column align-items-end text-white">
+                                <span class="opacity-50 fs-13">Points Required</span>
+                                <span>{{ activeReward.pointsRequired }}</span>
+                            </div>
+                        </div>
+
+                        <div class="text-white">
+                            <div class="fw-medium fs-14">{{ activeReward.name }}</div>
+                            <div class="fw-medium fs-14 my-1">{{ previewHeadline }}</div>
+                            <div class="text-white fs-12 mb-3">
+                                {{ activeReward.description }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-muted fs-15 fw-medium mt-3 mb-2">Mobile View</div>
+
+                    <div class="container-fluid px-3 px-lg-3">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-sm-11 col-md-10 col-lg-8 col-xl-8">
+                                <div class="p-3 rounded-4 border border-5 border-primary shadow-sm">
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <i
+                                            class="ri-gift-fill bg-primary text-white rounded-circle d-flex justify-content-center align-items-center icon-width"></i>
+                                        <span>Reward</span>
+                                    </div>
+                                    <div class="fw-semibold">{{ activeReward.name }}</div>
+                                    <div class="fs-14 fw-bold mt-1">{{ previewHeadline }}</div>
+                                    <div class="fs-14 text-muted">{{ mobilePreviewCopy }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Next Button -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-primary d-inline-flex align-items-center gap-2 text-nowrap cursor-pointer"
+                        [disabled]="loading" (click)="saveRewardDetails()">
+                        <span *ngIf="!loading">Next</span>
+                        <i *ngIf="!loading" class="ri-arrow-right-line"></i>
+                        <span *ngIf="loading">
+                            Next <i class="spinner-border spinner-border-sm me-2" role="status"></i>
+                        </span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </ng-container>
+
+
+    <!-- STEP 6 -->
+    <ng-container *ngIf="step === 6">
+        <div class="text-center mb-4">
+            <h4 class="fw-bold mb-2 fs-24">Customer Details</h4>
+            <p class="mb-0 fs-16 text-grey">
+                Choose the information you want customers to share before <br />
+                adding your pass.
+            </p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8">
+                <div class="p-3 p-lg-4 bg-secondary bg-opacity-50 rounded-top-3">
+                    <div class="p-3 bg-white rounded-3">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <i class="ri-information-line text-primary fs-5"></i>
+                            <div class="fw-semibold">Why collect customer data?</div>
+                        </div>
+                        <div class="fs-16">
+                            Enabling data collection allows customers to provide basic information (such as their
+                            name and email) before adding your pass to their wallet. You can then easily view
+                            their details in the Customers tab.
+                            <p class="mb-0 mt-2">How it helps your business:</p>
+                            <ul class="mb-0">
+                                <li>
+                                    For members-only cards, customers enter a one-time validation code and submit
+                                    their details to receive the pass.
+                                </li>
+                                <li>
+                                    If data collection is disabled, you’ll add their information manually, and
+                                    they’ll only need the validation code to access the pass.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="form-check form-switch mt-4">
+                        <input class="form-check-input shadow-none switch-danger border border-primary" type="checkbox"
+                            id="switch-data-collect" [(ngModel)]="enableDataCollection" />
+                        <label class="form-check-label ms-2" [class.text-primary]="enableDataCollection"
+                            for="switch-data-collect">
+                            Enable Data Collection
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center" *ngIf="enableDataCollection">
+            <div class="col-12 col-lg-8">
+                <div class="p-3 p-lg-4 bg-secondary bg-opacity-50 rounded-bottom-3">
+
+                    <div class="mb-3">
+                        <div class="fw-semibold mb-2">Basic Information</div>
+
+                        <div class="p-3 bg-white rounded-3 mb-3">
+                            <div class="fw-semibold mb-2">Why collect customer information?</div>
+                            <ul class="mb-0">
+                                <li>Send targeted offers to specific customer groups</li>
+                                <li>Build stronger relationships with personalized service</li>
+                                <li>Understand your customers better to improve your business</li>
+                            </ul>
+                        </div>
+
+                        <div class="d-flex flex-column gap-2">
+                            <div class="form-check" *ngFor="let f of basicFields; index as i">
+                                <input class="form-check-input check-primary border border-primary shadow-none"
+                                    type="checkbox" [id]="'bi-' + f.key" [ngModel]="f.checked"
+                                    (ngModelChange)="toggleBasicField(i, $event)" />
+                                <label class="form-check-label fs-14" [for]="'bi-' + f.key">
+                                    {{ f.label }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="fw-semibold">Additional Questions</div>
+                        <div class="mb-2 text-gray">
+                            Ask customers for specific information that helps you serve them better
+                        </div>
+
+                        <div *ngFor="let q of extraQuestions; let i = index" class="bg-white rounded-3 p-2 p-lg-3 mb-2">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-12 col-md">
+                                    <input class="form-control shadow-none" [(ngModel)]="q.prompt"
+                                        placeholder="e.g., how did you hear about us" />
+                                </div>
+                                <div class="col-8 col-md-3">
+                                    <select class="form-select" [(ngModel)]="q.type">
+                                        <option *ngFor="let t of questionTypeOptions" [value]="t.value">
+                                            {{ t.label }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-4 col-md-auto text-end">
+                                    <button type="button" class="btn bg-primary bg-opacity-25 border-0"
+                                        (click)="removeQuestion(i)">
+                                        <i class="ri-delete-bin-line text-primary"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 align-items-center mt-2">
+                                <div class="col-12 col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input shadow-none" type="checkbox" [id]="'req-' + i"
+                                            [(ngModel)]="q.required" />
+                                        <label class="form-check-labe fs-15" [for]="'req-' + i">
+                                            Customer Must Answer this
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md">
+                                    <input class="form-control shadow-none w-75 float-end" [(ngModel)]="q.value"
+                                        placeholder="Enter Value" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn w-100 border text-gray" (click)="addQuestion()">
+                            <i class="ri-add-line me-1"></i> Ask Question
+                        </button>
+                    </div>
+
+                    <div class="mb-2">
+                        <div class="text-primary mb-1">Message to customers</div>
+                        <textarea rows="3" class="form-control custom-input shadow-none"
+                            [(ngModel)]="messageToCustomers"
+                            placeholder="Please provide your information to receive your pass"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12 col-lg-8 mx-auto">
+                <div class="d-flex justify-content-end w-100">
+                    <button class="btn btn-primary d-inline-flex align-items-center gap-2 text-nowrap cursor-pointer"
+                        [disabled]="loading" (click)="saveCustomerDataAndNext()">
+                        <span *ngIf="!loading">Next</span>
+                        <i *ngIf="!loading" class="ri-arrow-right-line" aria-hidden="true"></i>
+                        <span *ngIf="loading">
+                            Next <i class="spinner-border spinner-border-sm me-2" role="status"></i>
+                        </span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </ng-container>
+
+
+</div>

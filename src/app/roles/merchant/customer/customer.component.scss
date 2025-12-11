@@ -1,0 +1,19 @@
+.image-width{
+    width: 30rem;
+    height: 17rem;
+}
+.btn-width{
+    width: 36px;
+    height: 36px;
+}
+.pagination .page-item.active .page-link {
+  background-color: var(--bs-primary); 
+  color: #fff;                        
+  border-color: var(--bs-primary);    
+}
+.form-control:focus {
+  border-color: var(--bs-primary);
+}
+.search-width{
+  width: 250px;
+}

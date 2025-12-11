@@ -1,0 +1,43 @@
+html, body {
+  width: 100%; height: 100%;
+  margin: 0; padding: 0;
+}
+.auth-form { max-width: 400px; }
+.auth-illustration {
+  background: url('../../../../public/images/image-bg.png') no-repeat center center / cover;
+}
+.auth-illustration-img {
+  left: 50%; top: 38%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  transition: all 0.3s ease-in-out;
+}
+.auth-illustration-caption {
+  bottom: 30px; left: 0; right: 0;
+//   padding: 0 16px;
+}
+
+.otp-group { 
+    max-width: 400px; 
+     }
+.otp-input {
+  width: 40px; height: 40px;
+}
+.form-control{
+    background-color: #ebebeb;
+}
+
+.form-control:focus {
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), .15);
+}
+
+@media (max-width: 991.98px) { 
+    .auth-illustration { display: none; } 
+}
+@media (min-width: 1400px)   { 
+    .auth-illustration-img { top: 45%; } 
+}
+
+.custom-hover:hover { color: var(--bs-primary-hover) !important; }
+.custom-hover:active { color: var(--bs-primary) !important; }

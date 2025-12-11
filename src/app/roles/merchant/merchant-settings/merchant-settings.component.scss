@@ -1,0 +1,36 @@
+    .width{
+      width:48px; height:48px;
+    }
+    .form-control::placeholder{ color:#b7b7b7; }
+    .section-gap{ gap:.75rem; }
+    @media (min-width: 992px){
+      .w-lg-50{ width:50%; }
+    }
+.toggle-visibility {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+}
+.active-tab {
+  color: var(--bs-primary) !important; 
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;  
+    left: 0;
+    height: 1px;    
+    width: 100%;    
+    background-color: var(--bs-primary);
+    border-radius: 2px;
+  }
+}
+.nav-item .btn-link:not(.active-tab):hover {
+  color: var(--bs-primary) !important;
+}
+
+.form-control:focus {
+  border-color: var(--bs-primary);
+}

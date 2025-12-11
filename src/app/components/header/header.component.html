@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-lg bg-primary">
+  <div class="container-fluid px-2 px-lg-5 d-flex align-items-center justify-content-between">
+    <a class="navbar-brand text-white" href="#">Logo</a>
+
+    <div class="d-flex align-items-end gap-2">
+      <div class="dropdown">
+        <div class="d-flex align-items-center gap-2 cursor-pointer" data-bs-toggle="dropdown" aria-expanded="false">
+          <img [src]="profileImage" class="rounded-circle" width="35" height="35" alt="Profile photo" />
+          <div class="text-white d-flex flex-column justify-content-center text-start text-capitalize">
+            <p class="mb-0 fs-13">
+              {{ userData.first_name }} {{ userData.last_name }}
+            </p>
+            <p class="mb-0 fs-12">
+              {{ userData.role?.name || userData.role || 'User' }}
+            </p>
+          </div>
+        </div>
+
+
+        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 rounded-3 py-2 px-1 btn-width">
+          <li>
+            <button class="dropdown-item d-flex align-items-center gap-2 rounded-2 hover-bg-primary" type="button"
+              (click)="goToSettings()">
+              <i class="ri-settings-3-line"></i>
+              <span>Settings</span>
+            </button>
+          </li>
+
+          <li>
+            <button class="dropdown-item d-flex align-items-center gap-2 rounded-2 hover-bg-primary" type="button"
+              (click)="logout()">
+              <i class="ri-logout-box-r-line"></i>
+              <span>Logout</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</nav>
